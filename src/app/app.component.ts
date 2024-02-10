@@ -13,19 +13,29 @@ export class AppComponent {
   user?: any;
   userNotFound: boolean = false;
   currentPage: number = 1;
+  pages: number[] = [];
+  totalRepositories: number = 0;
+  totalPages: number = 0;
+  itemsPerPage = 10;
+  repositories: any[] = [];
 
   constructor(private apiService: ApiService) { }
 
   searchRepos() {
+    if (!this.username.trim()) {
+      return; // Do nothing if the username is empty or whitespace
+    }
     this.loading = true;
     this.userNotFound = false;
 
     this.apiService.getUser(this.username).subscribe(
       userData => {
-        this.user = userData; // Store the user data in the user property
-        this.apiService.getRepos(this.username, this.currentPage).subscribe(
-          reposData => {
-            this.repos = reposData;
+        this.user = userData;
+        this.apiService.getRepos(this.username, this.currentPage, this.itemsPerPage).subscribe(
+          repoResponse => {
+            this.totalRepositories = repoResponse.total_count;
+            this.repositories = repoResponse.items;
+            this.calculateTotalPages(); 
             this.loading = false;
           },
           reposError => {
@@ -40,6 +50,22 @@ export class AppComponent {
         this.loading = false;
       }
     );
+  }
+
+  calculateTotalPages() {
+    this.totalPages = Math.ceil(this.totalRepositories / this.itemsPerPage);
+    this.pages = Array.from({length: this.totalPages}, (_, i) => i + 1);
+  }
+
+  goToFirstPage() {
+    this.currentPage = 1;
+    this.searchRepos();
+  }
+
+  goToLastPage() {
+    this.totalPages = Math.ceil(this.totalRepositories / this.itemsPerPage);
+    this.currentPage = this.totalPages;
+    this.searchRepos();
   }
 
   previousPage() {

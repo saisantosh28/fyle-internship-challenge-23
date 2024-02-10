@@ -1,24 +1,54 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { tap, throwError } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+type LinkHeader = {
+  [key: string]: string;
+};
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
 
-  constructor(
-    private httpClient: HttpClient
-  ) { }
+  constructor(private httpClient: HttpClient) { }
 
-  getUser(githubUsername: string) {
+  getUser(githubUsername: string): Observable<any> {
     return this.httpClient.get(`https://api.github.com/users/${githubUsername}`);
   }
 
-  getRepos(githubUsername: string, page: number = 1, perPage: number = 10): Observable<any> {
-    return this.httpClient.get(`https://api.github.com/users/${githubUsername}/repos?page=${page}&per_page=${perPage}`);
+  getRepos(githubUsername: string, page: number , perPage: number ): Observable<any> {
+    return this.httpClient.get(`https://api.github.com/users/${githubUsername}/repos?page=${page}&per_page=${perPage}`, { observe: 'response' })
+      .pipe(
+        map(response => {
+          // Parse link header if present
+          const linkHeader = this.parseLinkHeader(response.headers.get('Link'));
+          const lastPage = linkHeader['last'] ? this.getPageNumber(linkHeader['last']) : page;
+          // Calculate total count only if the last page link is available
+          const total_count = lastPage ? lastPage * perPage : perPage;
+          return { items: response.body as any[], total_count };
+        })
+      );
   }
 
-  // implement getRepos method by referring to the documentation. Add proper types for the return type and params 
+  private parseLinkHeader(header: string | null): LinkHeader {
+    if (header == null) return {};
+
+    let parts = header.split(',');
+    let links: LinkHeader = {};
+    parts.forEach(p => {
+      let section = p.split(';');
+      let url = section[0].replace(/<(.*)>/, '$1').trim();
+      let name = section[1].replace(/rel="(.*)"/, '$1').trim();
+      links[name] = url;
+    });
+
+    return links;
+  }
+
+  private getPageNumber(url: string): number {
+    const match = url.match(/\?page=(\d+)/);
+    return match ? Number(match[1]) : 1;
+  }
 }
