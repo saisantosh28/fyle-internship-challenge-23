@@ -8,6 +8,7 @@ import { ApiService } from './services/api.service';   // Make sure to import yo
 })
 export class AppComponent {
   username: string = '';
+  repoFilter: string = '';
   repos: any[] = [];
   loading: boolean = false;
   user?: any;
@@ -18,12 +19,18 @@ export class AppComponent {
   totalPages: number = 0;
   itemsPerPage = 10;
   repositories: any[] = [];
+  filteredRepositories: any[] = [];
+  lastUsername: string = '';
 
   constructor(private apiService: ApiService) { }
 
   searchRepos() {
     if (!this.username.trim()) {
-      return; // Do nothing if the username is empty or whitespace
+      return;
+    }
+    if (this.lastUsername !== this.username) {
+      this.currentPage = 1;
+      this.lastUsername = this.username;
     }
     this.loading = true;
     this.userNotFound = false;
@@ -35,8 +42,9 @@ export class AppComponent {
           repoResponse => {
             this.totalRepositories = repoResponse.total_count;
             this.repositories = repoResponse.items;
-            this.calculateTotalPages(); 
+            this.calculateTotalPages();
             this.loading = false;
+            this.filterRepos();
           },
           reposError => {
             this.repos = [];
@@ -52,9 +60,25 @@ export class AppComponent {
     );
   }
 
+  filterRepos() {
+    if (!this.repoFilter) {
+      this.filteredRepositories = this.repositories;
+    } else {
+      this.filteredRepositories = this.repositories.filter(repo =>
+        repo.name.toLowerCase().includes(this.repoFilter.toLowerCase())
+      );
+    }
+  }
+
+  updateItemsPerPage(value: number): void {
+    this.itemsPerPage = value;
+    this.currentPage = 1;
+    this.searchRepos();
+  }
+
   calculateTotalPages() {
     this.totalPages = Math.ceil(this.totalRepositories / this.itemsPerPage);
-    this.pages = Array.from({length: this.totalPages}, (_, i) => i + 1);
+    this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
   goToFirstPage() {

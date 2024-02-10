@@ -22,10 +22,8 @@ export class ApiService {
     return this.httpClient.get(`https://api.github.com/users/${githubUsername}/repos?page=${page}&per_page=${perPage}`, { observe: 'response' })
       .pipe(
         map(response => {
-          // Parse link header if present
           const linkHeader = this.parseLinkHeader(response.headers.get('Link'));
           const lastPage = linkHeader['last'] ? this.getPageNumber(linkHeader['last']) : page;
-          // Calculate total count only if the last page link is available
           const total_count = lastPage ? lastPage * perPage : perPage;
           return { items: response.body as any[], total_count };
         })
