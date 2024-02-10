@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ApiService } from './services/api.service';   // Make sure to import your ApiService
+import { ApiService } from './services/api.service';
 
 @Component({
   selector: 'app-root',
@@ -32,7 +32,16 @@ export class AppComponent {
       this.currentPage = 1;
       this.lastUsername = this.username;
     }
+    console.log("loading");
     this.loading = true;
+
+    let minimumLoadingTimeMet = false;
+    setTimeout(() => {
+      minimumLoadingTimeMet = true;
+      if (!this.user && !this.userNotFound) { // Add any other conditions to ensure data is still not fetched
+        this.loading = false;
+      }
+    }, 6000);
     this.userNotFound = false;
 
     this.apiService.getUser(this.username).subscribe(
