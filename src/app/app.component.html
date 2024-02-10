@@ -1,5 +1,88 @@
-<div class="grid h-screen place-items-center">
-  <div class="font-bold text-3xl">
-    Fyle Internship Challenge
+<nav class="bg-slate-900 text-white p-5 font-medium text-lg shadow-lg">
+  <div class="container mx-auto flex justify-between items-center">
+    <span class="text-xl font-semibold">GitHub Details</span>
+    <!-- Additional navbar content can go here -->
   </div>
+</nav>
+
+<!-- Main container -->
+<div class="bg-slate-700 min-h-screen">
+
+  <!-- Search Bar -->
+  <div class="flex justify-center pt-12">
+    <div class="w-full max-w-xl">
+      <form (submit)="searchRepos()" class="flex flex-col md:flex-row items-center justify-center mb-4">
+        <input type="text" [(ngModel)]="username" name="username" placeholder="Enter GitHub username..."
+          class="border p-2 rounded-md w-full md:w-64 placeholder-gray-500 bg-gray-100 shadow-md ng-valid ng-dirty ng-touched"
+          required>
+        <button type="submit"
+          class="bg-blue-500 text-white px-4 py-2 rounded-md mt-2 md:mt-0 ml-2 shadow-md">Search</button>
+      </form>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="text-center mt-5">
+    <!-- Loading Spinner or Text -->
+  </div>
+
+  <!-- 'No User Found' Message -->
+  <div *ngIf="userNotFound" class="flex flex-col items-center justify-center h-screen">
+    <img src="../assets/your-no-user-image.png.svg" alt="No User" class="mb-4">
+    <h2 class="text-lg font-semibold">No User Found</h2>
+    <p class="text-gray-500">Please enter a valid GitHub username</p>
+  </div>
+
+  <!-- User Profile -->
+  <div *ngIf="user" class="text-white py-12">
+    <div class="container mx-auto flex justify-start items-center">
+      <!-- User Avatar -->
+      <div class="rounded-full border-4 border-white h-32 w-32 mb-4 overflow-hidden mr-8">
+        <img [src]="user.avatar_url" alt="{{ user.name }}">
+      </div>
+      <!-- User Information -->
+      <div class="flex flex-col items-start">
+        <h1 class="text-3xl font-bold">{{ user.name }}</h1>
+        <h2 class="text-xl mb-2"><a href="{{ user.html_url }}" target="_blank">{{ user.login }}</a></h2>
+        <!-- Additional user data -->
+        <div class="mt-4">
+          <p>Followers: {{ user.followers }}</p>
+          <p>Website: <a href="{{ user.blog }}" target="_blank" class="hover:underline">{{ user.blog }}</a></p>
+          <p>Location: {{ user.location }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Repositories List -->
+  <div *ngIf="!loading && !userNotFound" class="container mx-auto px-4 sm:px-8 mt-8">
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div *ngFor="let repo of repos"
+        class="bg-slate-900 text-white p-4 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300">
+        <div class="flex flex-col h-full justify-between">
+          <div>
+            <h2 class="text-xl font-bold mb-2">{{ repo.name }}</h2>
+            <p class="mb-4">{{ repo.description || 'No description available' }}</p>
+            <div>
+              <span>Forks: {{ repo.forks_count }}</span>
+              <span class="ml-4">Stars: {{ repo.stargazers_count }}</span>
+            </div>
+          </div>
+          <a href="{{ repo.html_url }}" target="_blank" class="mt-4 hover:underline">View Repository</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Pagination Controls -->
+  <div class="flex justify-center mt-8">
+    <button (click)="previousPage()"
+      class="bg-white text-blue-500 py-2 px-4 rounded-lg shadow mr-2 hover:bg-blue-500 hover:text-white focus:outline-none disabled:opacity-50"
+      [disabled]="currentPage === 1">Previous</button>
+    <span class="text-blue-500 py-2 px-4">Page {{ currentPage }}</span>
+    <button (click)="nextPage()"
+      class="bg-white text-blue-500 py-2 px-4 rounded-lg shadow ml-2 hover:bg-blue-500 hover:text-white focus:outline-none">Next</button>
+  </div>
+
 </div>
