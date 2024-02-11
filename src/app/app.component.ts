@@ -38,7 +38,7 @@ export class AppComponent {
     let minimumLoadingTimeMet = false;
     setTimeout(() => {
       minimumLoadingTimeMet = true;
-      if (!this.user && !this.userNotFound) { // Add any other conditions to ensure data is still not fetched
+      if (!this.user && !this.userNotFound) { 
         this.loading = false;
       }
     }, 6000);
@@ -46,6 +46,7 @@ export class AppComponent {
 
     this.apiService.getUser(this.username).subscribe(
       userData => {
+        console.log("User data fetched successfully", userData);
         this.user = userData;
         this.apiService.getRepos(this.username, this.currentPage, this.itemsPerPage).subscribe(
           repoResponse => {

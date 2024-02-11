@@ -19,35 +19,33 @@
     </div>
   </div>
 
-  <div *ngIf="loading" class="animate-pulse space-y-4">
-    <!-- Profile Image Placeholder -->
-    <div class="rounded-full bg-gray-200 h-24 w-24 mx-auto"></div>
-    
-    <!-- Text Placeholders -->
-    <div class="space-y-2">
-      <div class="h-4 bg-gray-300 rounded w-3/4 mx-auto"></div>
-      <div class="h-4 bg-gray-300 rounded w-5/6 mx-auto"></div>
-      <div class="h-4 bg-gray-300 rounded w-2/3 mx-auto"></div>
+  <!-- Skeleton Loader for User Profile -->
+  <div *ngIf="loading" class="animate-pulse">
+    <div class="flex items-start space-x-4 p-10">
+      <div class="rounded-full bg-gray-300 h-40 w-40"></div>
+      <div class="flex-1 space-y-3 mt-10">
+        <div class="h-6 bg-gray-300 rounded w-1/5"></div>        
+        <div class="h-4 bg-gray-300 rounded w-1/4"></div>
+        <div class="h-4 bg-gray-300 rounded w-1/6"></div>
+      </div>
     </div>
-  
-    <!-- Card Placeholders -->
-    <div class="space-y-2">
-      <div class="h-20 bg-gray-300 rounded mx-auto w-11/12"></div>
-      <div class="h-20 bg-gray-300 rounded mx-auto w-11/12"></div>
-      <div class="h-20 bg-gray-300 rounded mx-auto w-11/12"></div>
+    <div class="space-y-2 p-10">
+      <div class="h-20 bg-gray-300 rounded w-full"></div>
+      <div class="h-20 bg-gray-300 rounded w-full"></div>
+      <div class="h-20 bg-gray-300 rounded w-10/12"></div>
     </div>
   </div>
   
 
   <!-- 'No User Found' Message -->
-  <div *ngIf="userNotFound" class="flex flex-col items-center justify-center h-screen">
+  <div *ngIf="!loading && userNotFound" class="flex flex-col items-center justify-center h-screen">
     <img src="../assets/your-no-user-image.png.svg" alt="No User" class="mb-4">
     <h2 class="text-lg font-semibold">No User Found</h2>
     <p class="text-gray-500">Please enter a valid GitHub username</p>
   </div>
 
   <!-- User Profile -->
-  <div *ngIf="user" class="text-white py-12 bg-dark">
+  <div *ngIf="!loading && user" class="text-white py-12 bg-dark">
     <div class="container mx-auto flex justify-start items-start">
       <div class="rounded-full border-4 border-white h-40 w-40 mb-4 overflow-hidden ml-12 mr-12">
         <img [src]="user.avatar_url" alt="{{ user.name }}">
@@ -68,7 +66,7 @@
   </div>
 
   <!-- Repositories per page -->
-  <div *ngIf="user" class="flex justify-between items-center px-5 mb-4">
+  <div *ngIf="!loading && user" class="flex justify-between items-center px-5 mb-4">
     <div class="flex-grow pl-5">
       <input type="text" [(ngModel)]="repoFilter" (keyup)="filterRepos()" placeholder="Filter repositories by name..."
         class="border p-2 rounded-md placeholder-gray-500 bg-gray-100 shadow-md w-full max-w-sm" />
