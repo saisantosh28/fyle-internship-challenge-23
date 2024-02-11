@@ -18,21 +18,22 @@ export class ApiService {
     return this.httpClient.get(`https://api.github.com/users/${githubUsername}`);
   }
 
-  getRepos(githubUsername: string, page: number , perPage: number ): Observable<any> {
+  getRepos(githubUsername: string, page: number, perPage: number): Observable<any> {
     return this.httpClient.get(`https://api.github.com/users/${githubUsername}/repos?page=${page}&per_page=${perPage}`, { observe: 'response' })
       .pipe(
         map(response => {
           const linkHeader = this.parseLinkHeader(response.headers.get('Link'));
           const lastPage = linkHeader['last'] ? this.getPageNumber(linkHeader['last']) : page;
-          const total_count = lastPage ? lastPage * perPage : perPage;
-          return { items: response.body as any[], total_count };
+          // Adjusted logic to correctly handle empty lists.
+          const items = response.body as any[];
+          const total_count = items.length > 0 ? (lastPage ? lastPage * perPage : perPage) : 0;
+          return { items, total_count };
         })
       );
   }
 
   private parseLinkHeader(header: string | null): LinkHeader {
     if (header == null) return {};
-
     let parts = header.split(',');
     let links: LinkHeader = {};
     parts.forEach(p => {

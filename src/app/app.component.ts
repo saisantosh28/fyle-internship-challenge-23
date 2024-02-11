@@ -32,16 +32,7 @@ export class AppComponent {
       this.currentPage = 1;
       this.lastUsername = this.username;
     }
-    console.log("loading");
     this.loading = true;
-
-    let minimumLoadingTimeMet = false;
-    setTimeout(() => {
-      minimumLoadingTimeMet = true;
-      if (!this.user && !this.userNotFound) { 
-        this.loading = false;
-      }
-    }, 6000);
     this.userNotFound = false;
 
     this.apiService.getUser(this.username).subscribe(
