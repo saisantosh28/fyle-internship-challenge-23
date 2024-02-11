@@ -98,7 +98,7 @@
                 class="text-blue-500 hover:underline">{{ repo.name }}</a></h2>
             <span class="text-xs sm:text-sm">{{ (repo.updated_at || repo.created_at) | date: 'mediumDate' }}</span>
           </div>
-          <p class="text-sm mt-2 mb-4">{{ repo.description || 'No description available' }}</p>
+          <p class="text-sm mt-2 mb-4">{{ repo.description }}</p>
 
           <div class="flex justify-between items-center mt-4">
             <span class="text-xs font-bold">Forks: {{ repo.forks_count }}</span>
