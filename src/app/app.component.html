@@ -8,54 +8,57 @@
 <div class="bg-slate-700 min-h-screen">
   <!-- Search Bar -->
   <div class="flex justify-center pt-12">
-    <div class="w-full max-w-xl">
-      <form (submit)="searchRepos()" class="flex flex-col md:flex-row items-center justify-center mb-4">
+    <div class="w-full px-4 md:max-w-xl lg:px-0">
+      <form (submit)="searchRepos()"
+        class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4">
         <input type="text" [(ngModel)]="username" name="username" placeholder="Enter GitHub username..."
-          class="border p-2 rounded-md w-full md:w-64 placeholder-gray-500 bg-gray-100 shadow-md ng-valid ng-dirty ng-touched"
+          class="border p-2 rounded-md w-full placeholder-gray-500 bg-gray-100 shadow-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
           required>
         <button type="submit"
-          class="bg-blue-500 text-white px-4 py-2 rounded-md mt-2 md:mt-0 ml-2 shadow-md">Search</button>
+          class="bg-blue-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 w-full md:w-auto">
+          Search
+        </button>
       </form>
     </div>
   </div>
-
-  <!-- Skeleton Loader for User Profile -->
+  <!-- Skeleton Loader -->
   <div *ngIf="loading" class="animate-pulse">
-    <div class="flex items-start space-x-4 p-10">
-      <div class="rounded-full bg-gray-300 h-40 w-40"></div>
-      <div class="flex-1 space-y-3 mt-10">
-        <div class="h-6 bg-gray-300 rounded w-1/5"></div>        
-        <div class="h-4 bg-gray-300 rounded w-1/4"></div>
-        <div class="h-4 bg-gray-300 rounded w-1/6"></div>
+    <div
+      class="flex flex-col items-center space-y-4 p-4 md:flex-row md:items-start md:space-y-0 md:space-x-4 lg:space-x-8 xl:space-x-10 md:p-8 lg:p-10">
+      <div class="rounded-full bg-gray-300 h-20 w-20 sm:h-24 sm:w-24 md:h-32 md:w-32 lg:h-36 lg:w-36 xl:h-40 xl:w-40">
+      </div>
+      <div class="flex-1 space-y-3 w-full">
+        <div class="h-6 bg-gray-300 rounded w-full sm:w-3/4 md:w-1/2 lg:w-2/5 xl:w-1/3"></div>
+        <div class="h-4 bg-gray-300 rounded w-full sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-2/5"></div>
+        <div class="h-4 bg-gray-300 rounded w-full sm:w-3/4 md:w-1/2 lg:w-2/5 xl:w-1/3"></div>
       </div>
     </div>
-    <div class="space-y-2 p-10">
-      <div class="h-20 bg-gray-300 rounded w-full"></div>
-      <div class="h-20 bg-gray-300 rounded w-full"></div>
-      <div class="h-20 bg-gray-300 rounded w-10/12"></div>
+    <div class="space-y-2 p-4 md:p-8 lg:p-10">
+      <div class="h-14 bg-gray-300 rounded w-full"></div>
+      <div class="h-14 bg-gray-300 rounded w-full"></div>
+      <div class="h-14 bg-gray-300 rounded w-full"></div>
+      <div class="h-14 bg-gray-300 rounded w-full md:w-11/12 lg:w-10/12"></div>
     </div>
   </div>
-  
-
   <!-- 'No User Found' Message -->
-  <div *ngIf="!loading && userNotFound" class="flex flex-col items-center justify-center h-screen">
-    <img src="../assets/your-no-user-image.png.svg" alt="No User" class="mb-4">
-    <h2 class="text-lg font-semibold">No User Found</h2>
-    <p class="text-gray-500">Please enter a valid GitHub username</p>
+  <div *ngIf="!loading && userNotFound" class="flex flex-col items-center justify-center px-4 py-10 text-center">
+    <img src="../assets/your-no-user-image.png.svg" alt="No User" class="mb-4 w-24 md:w-32 lg:w-40">
+    <h2 class="text-lg md:text-xl lg:text-2xl font-semibold">No User Found</h2>
+    <p class="text-gray-500 text-sm md:text-base lg:text-lg">Please enter a valid GitHub username</p>
   </div>
-
   <!-- User Profile -->
   <div *ngIf="!loading && user" class="text-white py-12 bg-dark">
-    <div class="container mx-auto flex justify-start items-start">
-      <div class="rounded-full border-4 border-white h-40 w-40 mb-4 overflow-hidden ml-12 mr-12">
-        <img [src]="user.avatar_url" alt="{{ user.name }}">
+    <div
+      class="container mx-auto flex flex-col items-center md:flex-row md:items-start md:justify-start md:ml-10 px-4 lg:px-0">
+      <div class="rounded-full border-4 border-white h-24 w-24 md:h-40 md:w-40 mb-4 overflow-hidden">
+        <img [src]="user.avatar_url" alt="{{ user.name }}" class="object-cover w-full h-full">
       </div>
-      <div class="flex flex-col">
-        <h1 class="text-3xl font-bold">{{ user.name }}</h1>
-        <h2 class="text-xl mb-2"><i class="fas fa-link mr-2"></i><a href="{{ user.html_url }}" target="_blank">{{
-            user.login }}</a></h2>
-        <p class="text-xl mb-2">{{ user.bio }}</p>
-        <div class="mt-4">
+      <div class="flex flex-col items-center md:items-start md:pl-10">
+        <h1 class="text-2xl md:text-3xl lg:text-4xl font-bold text-center md:text-left">{{ user.name }}</h1>
+        <h2 class="text-md md:text-xl lg:text-2xl mb-2"><i class="fas fa-link mr-2"></i><a href="{{ user.html_url }}"
+            target="_blank">{{ user.login }}</a></h2>
+        <p class="text-md md:text-xl lg:text-2xl mb-2 text-center md:text-left">{{ user.bio }}</p>
+        <div class="mt-4 text-center md:text-left">
           <p *ngIf="user.followers"><i class="fas fa-users mr-2"></i>Followers: {{ user.followers }}</p>
           <p *ngIf="user.blog"><i class="fas fa-link mr-2"></i>Website: <a href="{{ user.blog }}" target="_blank"
               class="hover:underline">{{ user.blog || 'Not available' }}</a></p>
@@ -64,19 +67,18 @@
       </div>
     </div>
   </div>
-
   <!-- Repositories per page -->
-  <div *ngIf="!loading && user" class="flex justify-between items-center px-5 mb-4">
-    <div class="flex-grow pl-5">
+  <div *ngIf="!loading && user"
+    class="flex flex-col items-center px-4 space-y-4 md:flex-row md:justify-between md:items-center md:px-5 md:space-y-0 mb-4">
+    <div class="w-full md:w-1/2 lg:w-1/3 xl:w-1/4">
       <input type="text" [(ngModel)]="repoFilter" (keyup)="filterRepos()" placeholder="Filter repositories by name..."
-        class="border p-2 rounded-md placeholder-gray-500 bg-gray-100 shadow-md w-full max-w-sm" />
+        class="border p-2 rounded-md placeholder-gray-500 bg-gray-100 shadow-md w-full" />
     </div>
-    <div class="flex-grow"></div>
-    <div>
-      <div class="flex items-center space-x-2 pr-5">
-        <label for="perPage" class="text-lg text-white">Repositories per page:</label>
+    <div class="w-full md:w-auto">
+      <div class="flex items-center space-x-2">
+        <label for="perPage" class="text-lg text-white whitespace-nowrap">Repositories per page:</label>
         <select id="perPage" [(ngModel)]="itemsPerPage" (change)="updateItemsPerPage(itemsPerPage)"
-          class="text-lg sm border-gray-300 rounded-md shadow-sm bg-white">
+          class="text-lg border-gray-300 rounded-md shadow-sm bg-white">
           <option value="10">10</option>
           <option value="20">20</option>
           <option value="50">50</option>
@@ -85,59 +87,49 @@
       </div>
     </div>
   </div>
-
   <!-- Repositories List -->
-  <div *ngIf="!loading && !userNotFound" class="container mx-auto px-4 sm:px-8 mt-8">
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+  <div *ngIf="!loading && !userNotFound" class="container mx-auto px-4 sm:px-6 md:px-8 mt-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       <div *ngFor="let repo of filteredRepositories"
-        class="bg-gray-800 text-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300">
+        class="bg-gray-800 text-white p-4 sm:p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300">
         <div class="flex flex-col h-full justify-between">
-          <div class="flex justify-between items-start">
-            <h2 class="text-xl font-bold">{{ repo.name }}</h2>
-            <span class="text-sm self-end">{{ (repo.updated_at || repo.created_at) | date: 'mediumDate' }}</span>
+          <div>
+            <h2 class="text-lg sm:text-xl font-bold truncate"><a href="{{ repo.html_url }}" target="_blank"
+                class="text-blue-500 hover:underline">{{ repo.name }}</a></h2>
+            <span class="text-xs sm:text-sm">{{ (repo.updated_at || repo.created_at) | date: 'mediumDate' }}</span>
           </div>
           <p class="text-sm mt-2 mb-4">{{ repo.description || 'No description available' }}</p>
-          <p class="text-sm mb-4">
-            <span class="font-bold">Repo: </span>
-            <a href="{{ repo.html_url }}" target="_blank" class="text-blue-500 text-sm hover:underline">{{ repo.html_url
-              }}</a>
-          </p>
-          <div class="mt-4 flex justify-between">
-            <div>
-              <span class="text-sm font-bold">Forks: </span> <span class="text-sm text-lg">{{ repo.forks_count }}</span>
-            </div>
-            <div>
-              <span class="text-sm font-bold">Stars: </span> <span class="text-sm text-lg">{{ repo.stargazers_count
-                }}</span>
-            </div>
+
+          <div class="flex justify-between items-center mt-4">
+            <span class="text-xs font-bold">Forks: {{ repo.forks_count }}</span>
+            <span class="text-xs font-bold">Stars: {{ repo.stargazers_count }}</span>
           </div>
           <div *ngIf="repo.topics && repo.topics.length > 0" class="mt-4">
-            <span class="text-sm font-bold">Topics: </span>
+            <span class="text-xs font-bold">Topics:</span>
             <div class="flex flex-wrap">
               <div *ngFor="let topic of repo.topics" class="bg-blue-600 rounded px-2 py-1 text-xs text-white mr-2 mb-2">
-                {{ topic }}</div>
+                {{ topic }}
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-
-  <!-- Pagination Controls -->
-  <div *ngIf="user && !loading && !userNotFound" class="flex justify-center mt-8 pb-10">
+  <!-- Pagination Controls-->
+  <div *ngIf="user && !loading && !userNotFound" class="flex justify-center items-center mt-8 pb-10 flex-wrap">
     <button (click)="goToFirstPage()"
-      class="bg-white text-blue-500 py-2 px-4 rounded-lg shadow mr-2 hover:bg-blue-500 hover:text-white focus:outline-none disabled:opacity-50"
+      class="bg-white text-blue-500 py-2 px-3 md:px-4 rounded-lg shadow mr-1 md:mr-2 hover:bg-blue-500 hover:text-white focus:outline-none disabled:opacity-50 text-xs md:text-sm"
       [disabled]="currentPage === 1">« First</button>
     <button (click)="previousPage()"
-      class="bg-white text-blue-500 py-2 px-4 rounded-lg shadow mr-2 hover:bg-blue-500 hover:text-white focus:outline-none disabled:opacity-50"
+      class="bg-white text-blue-500 py-2 px-3 md:px-4 rounded-lg shadow mr-1 md:mr-2 hover:bg-blue-500 hover:text-white focus:outline-none disabled:opacity-50 text-xs md:text-sm"
       [disabled]="currentPage === 1">Previous</button>
-    <span class="text-blue-500 py-2 px-4">Page {{ currentPage }}</span>
+    <span class="text-blue-500 py-2 px-4 text-xs md:text-sm">Page {{ currentPage }}</span>
     <button (click)="nextPage()"
-      class="bg-white text-blue-500 py-2 px-4 rounded-lg shadow ml-2 hover:bg-blue-500 hover:text-white focus:outline-none disabled:opacity-50"
+      class="bg-white text-blue-500 py-2 px-3 md:px-4 rounded-lg shadow ml-1 md:ml-2 hover:bg-blue-500 hover:text-white focus:outline-none disabled:opacity-50 text-xs md:text-sm"
       [disabled]="currentPage === totalPages">Next</button>
     <button (click)="goToLastPage()"
-      class="bg-white text-blue-500 py-2 px-4 rounded-lg shadow ml-2 hover:bg-blue-500 hover:text-white focus:outline-none disabled:opacity-50"
+      class="bg-white text-blue-500 py-2 px-3 md:px-4 rounded-lg shadow ml-1 md:ml-2 hover:bg-blue-500 hover:text-white focus:outline-none disabled:opacity-50 text-xs md:text-sm"
       [disabled]="currentPage === totalPages">Last »</button>
   </div>
-
 </div>
