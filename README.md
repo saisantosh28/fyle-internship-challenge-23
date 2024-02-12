@@ -30,6 +30,5 @@
 6. Open your web browser and navigate to http://localhost:4200 to access the fyle-internship-challenge-23 app locally.
    
 7. Additionally, you can access the deployed version of the app using the following link:
-    ```bash
     https://saisantosh28.github.io/fyle-internship-challenge-23/
-    ```
+
