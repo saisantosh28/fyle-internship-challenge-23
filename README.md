@@ -1,12 +1,9 @@
-# Getting Started
-
-To get started with the fyle-internship-challenge-23 app, follow these simple steps:
+# Getting Started with fyle-internship-challenge-23
 
 1. Clone the app repository by running the following command in your terminal:
 
    ```bash
    git clone https://github.com/saisantosh28/fyle-internship-challenge-23.git
-
    ```
 
 2. Navigate to the root directory of the app.
@@ -15,28 +12,24 @@ To get started with the fyle-internship-challenge-23 app, follow these simple st
    cd fyle-internship-challenge-23
    ```
 
-3. Install the required dependencies by running:
-
+3. Install the necessary dependencies by executing:
    ```bash
    npm install
    ```
 
-4. To perform Unit Testing:
-
+4. To conduct unit testing, run the following command:
    ```bash
    ng test
    ```
 
-5. Start the app by running:
-
+5. Launch the app by running:
    ```bash
    ng serve
    ```
    
-6. Open your web browser and visit [http://localhost:4200](http://localhost:4200/) to use the fyle-internship-challenge-23 app.
-
-7. Here is the deployment link which is deployed using Github pages:
-
+6. Open your web browser and navigate to http://localhost:4200 to access the fyle-internship-challenge-23 app locally.
+   
+7. Additionally, you can access the deployed version of the app using the following link:
     ```bash
     https://saisantosh28.github.io/fyle-internship-challenge-23/
     ```
