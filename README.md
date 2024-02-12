@@ -37,6 +37,6 @@ To get started with the fyle-internship-challenge-23 app, follow these simple st
 
 7. Here is the deployment link which is deployed using Github pages:
 
-  ```bash
-   https://saisantosh28.github.io/fyle-internship-challenge-23/
-   ```
+    ```bash
+    https://saisantosh28.github.io/fyle-internship-challenge-23/
+    ```
